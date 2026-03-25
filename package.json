@@ -1,0 +1,69 @@
+{
+  "name": "go-live",
+  "displayName": "Go Live",
+  "description": "Live Server extension for Antigravity, VS Code, and Cursor.",
+  "version": "1.0.0",
+  "publisher": "antigravity",
+  "engines": {
+    "vscode": "^1.74.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "go-live.start",
+        "title": "Go Live",
+        "category": "Go Live"
+      },
+      {
+        "command": "go-live.stop",
+        "title": "Stop Live Server",
+        "category": "Go Live"
+      }
+    ],
+    "menus": {
+      "editor/context": [
+        {
+          "command": "go-live.start",
+          "when": "resourceExtname == .html",
+          "group": "navigation"
+        }
+      ],
+      "explorer/context": [
+        {
+          "command": "go-live.start",
+          "when": "resourceExtname == .html",
+          "group": "navigation"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile && npm run lint",
+    "lint": "eslint src --ext ts",
+    "test": "node ./out/test/runTest.js"
+  },
+  "devDependencies": {
+    "@types/node": "^20.19.5",
+    "@types/vscode": "^1.74.0",
+    "@types/express": "^4.17.21",
+    "@types/ws": "^8.5.10",
+    "@vscode/test-electron": "^2.3.8",
+    "typescript": "^5.3.3",
+    "eslint": "^8.56.0",
+    "@typescript-eslint/parser": "^6.19.1",
+    "@typescript-eslint/eslint-plugin": "^6.19.1"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "ws": "^8.16.0",
+    "chokidar": "^3.5.3"
+  }
+}
