@@ -5,15 +5,17 @@ export class FileWatcher {
     private watcher?: FSWatcher;
     private rootDir: string;
     private onFileChange: () => void;
+    private ignorePatterns: string[];
 
-    constructor(rootDir: string, onFileChange: () => void) {
+    constructor(rootDir: string, ignorePatterns: string[], onFileChange: () => void) {
         this.rootDir = rootDir;
+        this.ignorePatterns = ignorePatterns;
         this.onFileChange = onFileChange;
     }
 
     public start() {
         this.watcher = watch(this.rootDir, {
-            ignored: /node_modules|\.git/,
+            ignored: this.ignorePatterns.map(p => new RegExp(p.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'))),
             persistent: true,
             ignoreInitial: true,
         });
@@ -25,10 +27,8 @@ export class FileWatcher {
     }
 
     private handleChange(filePath: string) {
-        const ext = path.extname(filePath);
-        if (['.html', '.css', '.js', '.json'].includes(ext)) {
-            this.onFileChange();
-        }
+        // Reload for all files that were not ignored by the watcher
+        this.onFileChange();
     }
 
     public stop() {

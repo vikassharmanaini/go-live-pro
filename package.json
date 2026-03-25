@@ -1,16 +1,40 @@
 {
-  "name": "go-live",
-  "displayName": "Go Live",
-  "description": "Live Server extension for Antigravity, VS Code, and Cursor.",
+  "name": "go-live-pro",
+  "displayName": "Go Live Pro",
+  "description": "Professional Live Server with Embedded Chromium DevTools, Screencast, and Proxy support.",
   "version": "1.0.0",
-  "publisher": "antigravity",
+  "publisher": "vikassharmanaini",
+  "icon": "resources/icon.png",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/vikassharmanaini/go-live-pro"
+  },
+  "homepage": "https://github.com/vikassharmanaini/go-live-pro#readme",
+  "bugs": {
+    "url": "https://github.com/vikassharmanaini/go-live-pro/issues"
+  },
+  "keywords": [
+    "live server",
+    "web server",
+    "preview",
+    "devtools",
+    "chromium",
+    "hot reload",
+    "spa",
+    "proxy"
+  ],
   "engines": {
     "vscode": "^1.74.0"
   },
   "categories": [
+    "Visualization",
+    "Debuggers",
     "Other"
   ],
-  "activationEvents": [],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
   "main": "./out/extension.js",
   "contributes": {
     "commands": [
@@ -22,6 +46,16 @@
       {
         "command": "go-live.stop",
         "title": "Stop Live Server",
+        "category": "Go Live"
+      },
+      {
+        "command": "go-live.openSettings",
+        "title": "Go Live Settings",
+        "category": "Go Live"
+      },
+      {
+        "command": "go-live.openPreview",
+        "title": "Go Live: Open Preview",
         "category": "Go Live"
       }
     ],
@@ -40,6 +74,77 @@
           "group": "navigation"
         }
       ]
+    },
+    "configuration": {
+      "title": "Go Live Configuration",
+      "properties": {
+        "go-live.port": {
+          "type": "number",
+          "default": 5500,
+          "description": "Port to run the Live Server on."
+        },
+        "go-live.root": {
+          "type": "string",
+          "default": "./",
+          "description": "The root directory to serve files from (relative to workspace)."
+        },
+        "go-live.spa": {
+          "type": "boolean",
+          "default": false,
+          "description": "Enable Single Page Application (SPA) mode (fallback to index.html)."
+        },
+        "go-live.ignorePatterns": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [
+            "node_modules",
+            ".git"
+          ],
+          "description": "Patterns to ignore during file watching."
+        },
+        "go-live.proxy": {
+          "type": "string",
+          "default": "",
+          "description": "Proxy all non-file requests to this URL (e.g., http://localhost:8080/api)."
+        },
+        "go-live.devCommand": {
+          "type": "string",
+          "default": "",
+          "description": "Optional terminal command to run when Go Live starts (e.g., 'npm run dev')."
+        },
+        "go-live.openBrowser": {
+          "type": "boolean",
+          "default": true,
+          "description": "Whether to automatically open the browser when the server starts."
+        },
+        "go-live.chromeExecutable": {
+          "type": "string",
+          "default": "",
+          "description": "Path to Chrome, Chromium, or Edge for embedded DevTools. Leave empty to auto-detect."
+        },
+        "go-live.devtoolsDebugPort": {
+          "type": "number",
+          "default": 0,
+          "description": "Remote debugging port for Chrome (0 = pick a free port in 9222–9321)."
+        },
+        "go-live.useIframePreview": {
+          "type": "boolean",
+          "default": false,
+          "description": "When true, the main preview uses the VS Code webview iframe only (legacy). When false, the preview shows Chromium via CDP screencast so it matches the tab DevTools is attached to."
+        },
+        "go-live.chromeHeadless": {
+          "type": "boolean",
+          "default": false,
+          "description": "Launch Chromium with --headless=new for embedded preview (DevTools and screencast still work). Reduces visible browser windows."
+        },
+        "go-live.chromeOffScreenWindow": {
+          "type": "boolean",
+          "default": true,
+          "description": "When not headless, move the Chromium window off-screen (--window-position) so it is less distracting."
+        }
+      }
     }
   },
   "scripts": {
@@ -51,19 +156,20 @@
     "test": "node ./out/test/runTest.js"
   },
   "devDependencies": {
+    "@types/express": "^4.17.21",
     "@types/node": "^20.19.5",
     "@types/vscode": "^1.74.0",
-    "@types/express": "^4.17.21",
     "@types/ws": "^8.5.10",
-    "@vscode/test-electron": "^2.3.8",
-    "typescript": "^5.3.3",
-    "eslint": "^8.56.0",
+    "@typescript-eslint/eslint-plugin": "^6.19.1",
     "@typescript-eslint/parser": "^6.19.1",
-    "@typescript-eslint/eslint-plugin": "^6.19.1"
+    "@vscode/test-electron": "^2.3.8",
+    "eslint": "^8.56.0",
+    "typescript": "^5.3.3"
   },
   "dependencies": {
+    "chokidar": "^3.5.3",
     "express": "^4.18.2",
-    "ws": "^8.16.0",
-    "chokidar": "^3.5.3"
+    "http-proxy-middleware": "^3.0.5",
+    "ws": "^8.16.0"
   }
 }
