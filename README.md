@@ -47,4 +47,4 @@ Check the `doc/` folder for in-depth architectural and technical documentation:
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ---
-Built with ❤️ for the VS Code community by [Vikas Sharma Naini](https://github.com/vikassharmanaini).
+Built with ❤️ for the VS Code community by [Vikas Sharma](https://github.com/vikassharmanaini).
